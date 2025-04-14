@@ -1,4 +1,4 @@
-package com.routecontrol.eureka-server.controller;
+package org.pe.llantatech.gateway.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,6 +8,6 @@ public class HelloController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "Hello from Eureka Server!";
+        return "Hello from Api Gateway!";
     }
 }
