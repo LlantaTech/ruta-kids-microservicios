@@ -4,23 +4,24 @@ server:
 spring:
   application:
     name: eureka-server
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8081/realms/route-control
 
 eureka:
   client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: false
+    fetch-registry: false
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-  metrics:
-    export:
-      prometheus:
+  prometheus:
+    metrics:
+      export:
         enabled: true
+
+logging:
+  level:
+    com.netflix.discovery: DEBUG
+    com.netflix.eureka: DEBUG
+
