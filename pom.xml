@@ -39,6 +39,7 @@
         <module>tracking-service</module>
         <module>payment-service</module>
         <module>iam-service</module>
+        <module>keycloak-service</module>
         <!--    <module>audit-service</module>-->
         <!--    <module>parent-management-service</module>-->
     </modules>

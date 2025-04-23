@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: keycloak-service
+
+server:
+  port: 0 # random port
