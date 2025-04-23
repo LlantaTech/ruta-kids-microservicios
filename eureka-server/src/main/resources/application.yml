@@ -1,27 +1,5 @@
-server:
-  port: 8761
-
 spring:
+  config:
+    import: optional:configserver:http://localhost:8888
   application:
-    name: eureka-server
-
-eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  prometheus:
-    metrics:
-      export:
-        enabled: true
-
-logging:
-  level:
-    com.netflix.discovery: DEBUG
-    com.netflix.eureka: DEBUG
-
+    name: eureka-service
