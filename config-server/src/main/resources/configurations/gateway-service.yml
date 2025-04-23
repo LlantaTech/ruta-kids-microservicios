@@ -25,3 +25,30 @@ info:
   maintainer: "contacto@llantatech.org.pe"
   java-version: ${java.version}
   java-vendor: ${java.vendor}
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  info:
+    build:
+      enabled: true
+    git:
+      enabled: true
+    defaults:
+      enabled: true
+    env:
+      enabled: true
+  security:
+    enabled: false
