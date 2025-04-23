@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/users/**
+        - id: iam-service
+          uri: lb://iam-service
+          predicates:
+            - Path=/auth/**
+
+info:
+  application:
+    name: Api Gateway
+    description: Pasarela central de servicios
+    version: 1.0.0
+  maintainer: "contacto@llantatech.org.pe"
+  java-version: ${java.version}
+  java-vendor: ${java.vendor}

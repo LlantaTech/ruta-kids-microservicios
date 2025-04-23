@@ -1,0 +1,44 @@
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+name:
+  value: rutakids-config
+
+spring:
+  cloud:
+    config:
+      override-system-properties: false
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  info:
+    build:
+      enabled: true
+    git:
+      enabled: true
+    defaults:
+      enabled: true
+    env:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.security: INFO
+    org.springframework.cloud.gateway: DEBUG
