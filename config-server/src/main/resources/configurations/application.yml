@@ -13,30 +13,35 @@ spring:
     config:
       override-system-properties: false
 
+#management:
+#  tracing:
+#    sampling:
+#      probability: 1.0
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#  endpoint:
+#    health:
+#      show-details: always
+#  prometheus:
+#    metrics:
+#      export:
+#        enabled: true
+#  info:
+#    build:
+#      enabled: true
+#    git:
+#      enabled: true
+#    defaults:
+#      enabled: true
+#    env:
+#      enabled: true
+
 management:
   tracing:
     sampling:
       probability: 1.0
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
-  prometheus:
-    metrics:
-      export:
-        enabled: true
-  info:
-    build:
-      enabled: true
-    git:
-      enabled: true
-    defaults:
-      enabled: true
-    env:
-      enabled: true
 
 logging:
   level:
