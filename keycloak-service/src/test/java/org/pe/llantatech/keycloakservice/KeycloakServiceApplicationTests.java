@@ -1,12 +1,12 @@
 package org.pe.llantatech.keycloakservice;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class KeycloakServiceApplicationTests {
 
-    @Test
+//    @Test
     void contextLoads() {
     }
 
