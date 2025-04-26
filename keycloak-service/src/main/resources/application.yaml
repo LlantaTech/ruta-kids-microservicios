@@ -4,3 +4,7 @@ spring:
 
 server:
   port: 0 # random port
+
+keycloak:
+  realm: ${KEYCLOAK_REALM:rutakids_llanta}
+  auth-server-url: ${KEYCLOAK_AUTH_SERVER_URL:https://auth.llantatech.org.pe/auth}
