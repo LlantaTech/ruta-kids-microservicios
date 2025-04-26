@@ -7,4 +7,15 @@ spring:
 
 keycloak:
   realm: ${KEYCLOAK_REALM:rutakids_llanta}
-  auth-server-url: ${KEYCLOAK_AUTH_SERVER_URL:https://auth.llantatech.org.pe/auth
+  resource: ruta-kids-spring-service
+  auth-server-url: ${KEYCLOAK_AUTH_SERVER_URL:https://auth.llantatech.org.pe/realms/rutakids_llanta
+  ssl-required: external
+  use-resource-role-mappings: true
+
+app:
+  keycloak:
+    login:
+      url: https://auth.llantatech.org.pe/realms/rutakids_llanta/protocol/openid-connect/token
+    grant-type: password
+    client-id: ${keycloak.resource}
+    client-secret: ${KEYCLOAK_CLIENT_SECRET:eWn2jCfA4NA0vTv2ocEo5Me2YvioM2cx}

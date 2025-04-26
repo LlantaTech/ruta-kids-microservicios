@@ -1,0 +1,139 @@
+classDiagram
+%% ENTITIES
+    class Device {
+        <<Entity>>
+        +UUID id
+        +String name
+        +String type
+        +UUID parentId
+        +List<Sensor> sensors
+    }
+
+    class Sensor {
+        <<Entity>>
+        +UUID id
+        +String type
+        +String unit
+    }
+
+    class SensorData {
+        <<Entity>>
+        +UUID id
+        +UUID sensorId
+        +LocalDateTime timestamp
+        +Double value
+    }
+
+%% DTOS
+    class DeviceDTO {
+        <<DTO>>
+        +UUID id
+        +String name
+        +String type
+    }
+
+    class SensorDTO {
+        <<DTO>>
+        +UUID id
+        +String type
+        +String unit
+    }
+
+    class SensorDataDTO {
+        <<DTO>>
+        +UUID id
+        +UUID sensorId
+        +LocalDateTime timestamp
+        +Double value
+    }
+
+%% REPOSITORIES
+    class DeviceRepository {
+        <<Repository>>
+        +findAll(): List<Device>
+        +findById(UUID id): Optional<Device>
+    }
+
+    class SensorRepository {
+        <<Repository>>
+        +findAllByDeviceId(UUID deviceId): List<Sensor>
+    }
+
+    class SensorDataRepository {
+        <<Repository>>
+        +findAllBySensorId(UUID sensorId): List<SensorData>
+    }
+
+%% SERVICES
+    class DeviceService {
+        <<Service>>
+        +findAllDevices(): List<DeviceDTO>
+        +findDeviceById(UUID id): DeviceDTO
+    }
+
+    class SensorService {
+        <<Service>>
+        +findSensorsByDeviceId(UUID deviceId): List<SensorDTO>
+    }
+
+    class SensorDataService {
+        <<Service>>
+        +findSensorDataBySensorId(UUID sensorId): List<SensorDataDTO>
+        +saveSensorData(SensorDataDTO dto): void
+    }
+
+%% CONTROLLERS
+    class DeviceController {
+        <<Controller>>
+        +getAllDevices(): ResponseEntity<List<DeviceDTO>>
+        +getDeviceById(UUID id): ResponseEntity<DeviceDTO>
+    }
+
+    class SensorController {
+        <<Controller>>
+        +getSensorsByDevice(UUID deviceId): ResponseEntity<List<SensorDTO>>
+    }
+
+    class SensorDataController {
+        <<Controller>>
+        +getSensorData(UUID sensorId): ResponseEntity<List<SensorDataDTO>>
+    }
+
+%% KAFKA CONSUMER
+    class IoTKafkaConsumer {
+        <<KafkaListener>>
+        +consumeSensorEvent(String message): void
+        +parseSensorPayload(String payload): SensorDataDTO
+    }
+
+%% CONFIGURATION
+    class AppConfigIoT {
+        <<Configuration>>
+        +mongoTemplate(): MongoTemplate
+        +kafkaConsumerFactory(): ConsumerFactory
+    }
+
+%% RELATIONS WITH
+
+Device "1" o-- "*" Sensor : contains >
+Sensor "1" o-- "*" SensorData : records >
+
+DeviceRepository <|.. DeviceService : uses >
+SensorRepository <|.. SensorService : uses >
+SensorDataRepository <|.. SensorDataService : uses >
+
+DeviceService --> DeviceDTO : returns >
+SensorService --> SensorDTO : returns >
+SensorDataService --> SensorDataDTO : returns >
+
+DeviceController --> DeviceService : uses >
+SensorController --> SensorService : uses >
+SensorDataController --> SensorDataService : uses >
+
+IoTKafkaConsumer --> SensorDataService : persists >
+IoTKafkaConsumer --> SensorDataDTO : parses >
+
+AppConfigIoT --> DeviceRepository : configures >
+AppConfigIoT --> SensorRepository : configures >
+AppConfigIoT --> SensorDataRepository : configures >
+AppConfigIoT --> IoTKafkaConsumer : configures >

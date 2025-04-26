@@ -1,0 +1,53 @@
+classDiagram
+%% INFRASTRUCTURE COMPONENTS
+    class API_Gateway {
+        <<Gateway>>
+    }
+
+    class Eureka_Server {
+<<Service Discovery>>
+}
+
+class Config_Server {
+<<Config Server>>
+}
+
+class Keycloak_Service {
+<<Identity Provider>>
+}
+
+class Kafka_Broker {
+<<Event Streaming Platform>>
+}
+
+%% MICROSERVICES
+class Parent_Service
+class IoT_Service
+class Routes_Service
+class IoT_Interceptor
+
+%% RELATIONS
+
+API_Gateway --> Parent_Service : routes >
+API_Gateway --> IoT_Service : routes >
+API_Gateway --> Routes_Service : routes >
+API_Gateway --> Keycloak_Service : authenticates >
+
+Parent_Service --> Eureka_Server : registers >
+IoT_Service --> Eureka_Server : registers >
+Routes_Service --> Eureka_Server : registers >
+IoT_Interceptor --> Eureka_Server : registers >
+
+Parent_Service --> Config_Server : fetches config >
+IoT_Service --> Config_Server : fetches config >
+Routes_Service --> Config_Server : fetches config >
+IoT_Interceptor --> Config_Server : fetches config >
+
+Parent_Service --> Keycloak_Service : validates tokens >
+IoT_Service --> Keycloak_Service : validates tokens >
+Routes_Service --> Keycloak_Service : validates tokens >
+
+IoT_Service --> Kafka_Broker : produces events >
+IoT_Interceptor --> Kafka_Broker : consumes events >
+Parent_Service --> Kafka_Broker : consumes events >
+Routes_Service --> Kafka_Broker : consumes events >
