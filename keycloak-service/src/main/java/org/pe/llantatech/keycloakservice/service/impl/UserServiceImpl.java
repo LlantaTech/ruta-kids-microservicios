@@ -19,20 +19,23 @@ import org.springframework.web.client.RestTemplate;
  * Project: ruta-kids-microservicios
  * Date: 4/26/25 @ 16:48
  */
-@AllArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
     @Value("${app.keycloak.login.url}")
-    private final String loginUrl;
+    private  String loginUrl;
     @Value("${app.keycloak.client-secret}")
-    private final String clientSecret;
+    private String clientSecret;
     @Value("${app.keycloak.grant-type}")
-    private final String grantType;
+    private String grantType;
     @Value("${app.keycloak.client-id}")
-    private final String clientId;
+    private String clientId;
 
     private final RestTemplate restTemplate;
+
+    public UserServiceImpl(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @Override
     public LoginResponseDto login(LoginRequestDto request) {

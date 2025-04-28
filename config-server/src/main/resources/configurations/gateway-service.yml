@@ -13,14 +13,14 @@ spring:
           lower-case-service-id: true
           route-id-prefix: ${spring.application.name}
       routes:
-        - id: user-service
+        - id: keycloak-service
           uri: lb://user-service
           predicates:
-            - Path=/users/**
-        - id: iam-service
-          uri: lb://iam-service
-          predicates:
-            - Path=/auth/**
+            - Path=/api/v1/auth/**
+#        - id: iam-service
+#          uri: lb://iam-service
+#          predicates:
+#            - Path=/auth/**
 
 info:
   application:

@@ -5,6 +5,7 @@ import org.pe.llantatech.keycloakservice.dto.LoginRequestDto;
 import org.pe.llantatech.keycloakservice.dto.LoginResponseDto;
 import org.pe.llantatech.keycloakservice.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,11 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
  * Project: ruta-kids-microservicios
  * Date: 4/26/25 @ 16:53
  */
-@RestController(value = "api/v1/auth")
-@AllArgsConstructor
+@RestController
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final UserService userService;
+
+    public AuthController(UserService userService) {
+        this.userService = userService;
+
+    }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto requestDto) {
