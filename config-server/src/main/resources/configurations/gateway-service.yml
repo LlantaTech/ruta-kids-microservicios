@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: api-gateway
+    name: gateway-service
 
   cloud:
     gateway:
@@ -14,7 +14,7 @@ spring:
           route-id-prefix: ${spring.application.name}
       routes:
         - id: keycloak-service
-          uri: lb://user-service
+          uri: lb://keycloak-service
           predicates:
             - Path=/api/v1/auth/**
 #        - id: iam-service
@@ -30,3 +30,11 @@ info:
   maintainer: "contacto@llantatech.org.pe"
   java-version: ${java.version}
   java-vendor: ${java.vendor}
+
+logging:
+  level:
+    org.springframework.web.reactive.function.client.ExchangeFunctions: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.gateway.filter: DEBUG
+    org.springframework.cloud.netflix.eureka: DEBUG
+    com.netflix.discovery: DEBUG

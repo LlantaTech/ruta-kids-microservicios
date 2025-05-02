@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtGra
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,6 +40,7 @@ public class JwtConverter implements Converter<Jwt, AbstractAuthenticationToken>
 
     @Override
     public AbstractAuthenticationToken convert(@NonNull Jwt jwt) {
+        log.debug("Converting JWT to AuthenticationToken...");
 
         Collection<GrantedAuthority> authorities = Stream.concat(
                         jwtGrantedAuthoritiesConverter.convert(jwt).stream(),
@@ -66,28 +68,26 @@ public class JwtConverter implements Converter<Jwt, AbstractAuthenticationToken>
     }
 
     private Collection<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
-        Map<String, Object> resourceAccess;
-        Map<String, Object> resource;
-        Collection<String> resourceRoles;
+        // Extraer roles de resource_access (específicamente de security-admin-console)
+        Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
+        log.debug("resource_access: " + resourceAccess);
 
-        if (jwt.getClaim("resource_access") == null) {
-            return Set.of();
+        Set<GrantedAuthority> authorities = new HashSet<>();
+
+        if (resourceAccess != null) {
+            // Verificar si el cliente "security-admin-console" está en resource_access
+            Map<String, Object> securityAdminConsoleRoles = (Map<String, Object>) resourceAccess.get("security-admin-console");
+
+            // Si encontramos roles para el cliente "security-admin-console"
+            if (securityAdminConsoleRoles != null && securityAdminConsoleRoles.get("roles") != null) {
+                Collection<String> roles = (Collection<String>) securityAdminConsoleRoles.get("roles");
+                authorities.addAll(roles.stream()
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                        .toList());
+            }
         }
 
-        resourceAccess = jwt.getClaim("resource_access");
-        log.debug(resourceAccess.toString());
-        if (resourceAccess.get(jwtConverterProperties.getResourceId()) == null) {
-            return Set.of();
-        }
-
-        resource = (Map<String, Object>) resourceAccess.get(jwtConverterProperties.getResourceId());
-        log.debug(resource.toString());
-        resourceRoles = (Collection<String>) resource.get("roles");
-
-
-        return resourceRoles
-                .stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                .collect(Collectors.toList());
+        return authorities;
     }
+
 }

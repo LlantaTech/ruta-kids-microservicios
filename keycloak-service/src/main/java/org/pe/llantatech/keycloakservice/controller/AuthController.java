@@ -5,10 +5,7 @@ import org.pe.llantatech.keycloakservice.dto.LoginRequestDto;
 import org.pe.llantatech.keycloakservice.dto.LoginResponseDto;
 import org.pe.llantatech.keycloakservice.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by Alex Avila Asto - A.K.A (Ryzeon)
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     private final UserService userService;

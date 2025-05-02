@@ -14,6 +14,10 @@ jwt:
       resource-id: ruta-kids-spring-service
       principal-attributes : preferred_username
 
+logging:
+  level:
+    org.pe.llantatech.keycloakservice: DEBUG
+
 #keycloak:
 #  realm: ${KEYCLOAK_REALM:rutakids_llanta}
 #  resource:

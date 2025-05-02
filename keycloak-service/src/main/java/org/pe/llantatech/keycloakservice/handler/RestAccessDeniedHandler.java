@@ -8,6 +8,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 /**
  * Created by Alex Avila Asto - A.K.A (Ryzeon)
@@ -19,7 +20,8 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
-        httpServletResponse.sendError(httpServletResponse.SC_FORBIDDEN,
-                e.getMessage());
+        httpServletResponse.setContentType("application/json");
+        httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);  // 403 Forbidden
+        httpServletResponse.getOutputStream().println("{ \"timestamp\": \"" + LocalDateTime.now() + "\", \"error\": \"" + "Forbidden" + "\", \"status\": 403 , \"message\": \"" + e.getMessage() + "\", \"path\": \"" + httpServletRequest.getRequestURI() + "\" }");
     }
 }
