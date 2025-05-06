@@ -41,6 +41,7 @@ public class KeyCloakSecurityWebPipeline {
                         .requestMatchers("/api/v1/auth/login/**").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/error").permitAll()
 
                         .anyRequest()
                         .authenticated()

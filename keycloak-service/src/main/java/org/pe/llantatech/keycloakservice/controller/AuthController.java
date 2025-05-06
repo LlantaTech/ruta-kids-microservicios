@@ -1,6 +1,6 @@
 package org.pe.llantatech.keycloakservice.controller;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.Valid;
 import org.pe.llantatech.keycloakservice.dto.LoginRequestDto;
 import org.pe.llantatech.keycloakservice.dto.LoginResponseDto;
 import org.pe.llantatech.keycloakservice.service.UserService;
@@ -21,11 +21,10 @@ public class AuthController {
 
     public AuthController(UserService userService) {
         this.userService = userService;
-
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto requestDto) {
+    @PostMapping(value = "/login", produces = "application/json")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody  @Valid LoginRequestDto requestDto) {
         LoginResponseDto loginResponse = userService.login(requestDto);
         return ResponseEntity.ok(loginResponse);
     }

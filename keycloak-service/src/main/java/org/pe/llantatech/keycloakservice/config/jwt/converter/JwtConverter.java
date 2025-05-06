@@ -68,17 +68,13 @@ public class JwtConverter implements Converter<Jwt, AbstractAuthenticationToken>
     }
 
     private Collection<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
-        // Extraer roles de resource_access (específicamente de security-admin-console)
         Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
-        log.debug("resource_access: " + resourceAccess);
 
         Set<GrantedAuthority> authorities = new HashSet<>();
 
         if (resourceAccess != null) {
-            // Verificar si el cliente "security-admin-console" está en resource_access
-            Map<String, Object> securityAdminConsoleRoles = (Map<String, Object>) resourceAccess.get("security-admin-console");
+            Map<String, Object> securityAdminConsoleRoles = (Map<String, Object>) resourceAccess.get(jwtConverterProperties.getResourceId());
 
-            // Si encontramos roles para el cliente "security-admin-console"
             if (securityAdminConsoleRoles != null && securityAdminConsoleRoles.get("roles") != null) {
                 Collection<String> roles = (Collection<String>) securityAdminConsoleRoles.get("roles");
                 authorities.addAll(roles.stream()

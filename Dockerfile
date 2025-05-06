@@ -1,0 +1,21 @@
+FROM jelastic/maven:3.9.5-openjdk-21 AS build
+
+# Set the module name to build
+ARG MODULE_NAME=config-server
+
+# Validar que el módulo esté definido
+RUN test -n "${MODULE_NAME}" || (echo "MODULE_NAME not set" && exit 1)
+
+WORKDIR /app
+COPY . .
+
+RUN mvn clean install -pl ${MODULE_NAME} -am -DskipTests
+
+FROM openjdk:21-jdk-slim
+
+ARG MODULE_NAME=config-server
+
+COPY --from=build /app/${MODULE_NAME}/target/*.jar app.jar
+
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/app.jar"]
