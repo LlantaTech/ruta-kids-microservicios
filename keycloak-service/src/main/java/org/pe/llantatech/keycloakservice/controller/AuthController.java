@@ -3,6 +3,7 @@ package org.pe.llantatech.keycloakservice.controller;
 import jakarta.validation.Valid;
 import org.pe.llantatech.keycloakservice.dto.LoginRequestDto;
 import org.pe.llantatech.keycloakservice.dto.LoginResponseDto;
+import org.pe.llantatech.keycloakservice.dto.RefreshTokenRequestDto;
 import org.pe.llantatech.keycloakservice.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,4 +29,11 @@ public class AuthController {
         LoginResponseDto loginResponse = userService.login(requestDto);
         return ResponseEntity.ok(loginResponse);
     }
+
+    @PostMapping(value = "/refresh", produces = "application/json")
+    public ResponseEntity<LoginResponseDto> refreshToken(@RequestBody @Valid RefreshTokenRequestDto requestDto) {
+        LoginResponseDto response = userService.refreshToken(requestDto.refreshToken());
+        return ResponseEntity.ok(response);
+    }
+
 }

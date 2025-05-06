@@ -57,4 +57,26 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Authentication failed: " + loginResponse.getStatusCode());
         }
     }
+
+    @Override
+    public LoginResponseDto refreshToken(String refreshToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("client_id", clientId);
+        map.add("client_secret", clientSecret);
+        map.add("grant_type", "refresh_token");
+        map.add("refresh_token", refreshToken);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+        ResponseEntity<LoginResponseDto> response = restTemplate.postForEntity(loginUrl, request, LoginResponseDto.class);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        } else {
+            throw new RuntimeException("Token refresh failed: " + response.getStatusCode());
+        }
+    }
+
 }

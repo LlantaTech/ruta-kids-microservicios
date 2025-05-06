@@ -11,4 +11,6 @@ import org.pe.llantatech.keycloakservice.dto.LoginResponseDto;
 public interface UserService {
 
     LoginResponseDto login(LoginRequestDto request);
+
+    LoginResponseDto refreshToken(String refreshToken);
 }

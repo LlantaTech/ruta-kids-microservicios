@@ -3,7 +3,6 @@ package org.pe.llantatech.gateway.config.app;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * Created by Alex Avila Asto - A.K.A (Ryzeon)
