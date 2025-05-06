@@ -37,10 +37,11 @@ public class KeyCloakSecurityWebPipeline {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
+
                         .requestMatchers("/api/v1/auth/hello/**").permitAll()
                         .requestMatchers("/api/v1/auth/login/**").permitAll()
+                        .requestMatchers("/api/v1/auth/docs").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/error").permitAll()
 
                         .anyRequest()
