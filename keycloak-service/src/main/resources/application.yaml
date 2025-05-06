@@ -1,10 +1,8 @@
-spring:
-  application:
-    name: keycloak-service
-
 server:
   port: 0 # random port
 
-keycloak:
-  realm: ${KEYCLOAK_REALM:rutakids_llanta}
-  auth-server-url: ${KEYCLOAK_AUTH_SERVER_URL:https://auth.llantatech.org.pe/auth}
+spring:
+  application:
+    name: keycloak-service
+  config:
+    import: optional:configserver:http://localhost:8888

@@ -1,0 +1,117 @@
+classDiagram
+%% ENTITIES
+    class Route {
+        <<Entity>>
+        +UUID id
+        +String name
+        +String description
+        +List<RoutePoint> points
+    }
+
+    class RoutePoint {
+        <<Entity>>
+        +UUID id
+        +Double latitude
+        +Double longitude
+        +Integer order
+    }
+
+    class TravelHistory {
+        <<Entity>>
+        +UUID id
+        +UUID parentId
+        +UUID routeId
+        +LocalDateTime startedAt
+        +LocalDateTime endedAt
+    }
+
+%% DTOS
+    class RouteDTO {
+        <<DTO>>
+        +UUID id
+        +String name
+    }
+
+    class RoutePointDTO {
+        <<DTO>>
+        +UUID id
+        +Double latitude
+        +Double longitude
+    }
+
+    class TravelHistoryDTO {
+        <<DTO>>
+        +UUID id
+        +LocalDateTime startedAt
+        +LocalDateTime endedAt
+    }
+
+%% REPOSITORIES
+    class RouteRepository {
+        <<Repository>>
+        +findAll(): List<Route>
+        +findById(UUID id): Optional<Route>
+    }
+
+    class TravelHistoryRepository {
+        <<Repository>>
+        +findAllByParentId(UUID parentId): List<TravelHistory>
+    }
+
+%% SERVICES
+    class RouteService {
+        <<Service>>
+        +findAllRoutes(): List<RouteDTO>
+        +findRouteById(UUID id): RouteDTO
+    }
+
+    class TravelHistoryService {
+        <<Service>>
+        +findTravelHistoriesByParent(UUID parentId): List<TravelHistoryDTO>
+    }
+
+%% CONTROLLERS
+    class RouteController {
+        <<Controller>>
+        +getAllRoutes(): ResponseEntity<List<RouteDTO>>
+        +getRouteById(UUID id): ResponseEntity<RouteDTO>
+    }
+
+    class TravelHistoryController {
+        <<Controller>>
+        +getTravelHistories(UUID parentId): ResponseEntity<List<TravelHistoryDTO>>
+    }
+
+%% KAFKA CONSUMER
+    class RoutesKafkaConsumer {
+        <<KafkaListener>>
+        +consumeRouteEvent(String message): void
+        +parseRoutePayload(String payload): RouteDTO
+    }
+
+%% CONFIGURATION
+    class AppConfigRoutes {
+        <<Configuration>>
+        +datasourceConfig(): DataSource
+    }
+
+%% RELATIONS
+
+Route "1" o-- "*" RoutePoint : composed of >
+TravelHistory "*" --> "1" Route : references >
+
+RouteRepository <|.. RouteService : uses >
+TravelHistoryRepository <|.. TravelHistoryService : uses >
+
+RouteService --> RouteDTO : produces >
+TravelHistoryService --> TravelHistoryDTO : produces >
+
+RouteController --> RouteService : uses >
+TravelHistoryController --> TravelHistoryService : uses >
+
+RoutesKafkaConsumer --> RouteService : persists >
+RoutesKafkaConsumer --> RouteDTO : parses >
+
+AppConfigRoutes --> RouteRepository : configures >
+AppConfigRoutes --> TravelHistoryRepository : configures >
+AppConfigRoutes --> RoutesKafkaConsumer : configures >

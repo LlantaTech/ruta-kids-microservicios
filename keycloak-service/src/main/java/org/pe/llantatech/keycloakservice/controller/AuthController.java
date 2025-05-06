@@ -1,0 +1,39 @@
+package org.pe.llantatech.keycloakservice.controller;
+
+import jakarta.validation.Valid;
+import org.pe.llantatech.keycloakservice.dto.LoginRequestDto;
+import org.pe.llantatech.keycloakservice.dto.LoginResponseDto;
+import org.pe.llantatech.keycloakservice.dto.RefreshTokenRequestDto;
+import org.pe.llantatech.keycloakservice.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+/**
+ * Created by Alex Avila Asto - A.K.A (Ryzeon)
+ * Project: ruta-kids-microservicios
+ * Date: 4/26/25 @ 16:53
+ */
+@RestController
+@CrossOrigin(origins = "*")
+@RequestMapping("/api/v1/auth")
+public class AuthController {
+
+    private final UserService userService;
+
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping(value = "/login", produces = "application/json")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody  @Valid LoginRequestDto requestDto) {
+        LoginResponseDto loginResponse = userService.login(requestDto);
+        return ResponseEntity.ok(loginResponse);
+    }
+
+    @PostMapping(value = "/refresh", produces = "application/json")
+    public ResponseEntity<LoginResponseDto> refreshToken(@RequestBody @Valid RefreshTokenRequestDto requestDto) {
+        LoginResponseDto response = userService.refreshToken(requestDto.refreshToken());
+        return ResponseEntity.ok(response);
+    }
+
+}

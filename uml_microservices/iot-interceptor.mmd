@@ -1,0 +1,33 @@
+classDiagram
+    class IoTConsumer {
+        <<KafkaListener>>
+        +consumeIoTEvent(String message): void
+        +processSensorData(SensorDataDTO data): void
+    }
+
+    class WebSocketController {
+        <<WebSocket>>
+        +broadcastSensorData(String destination, SensorDataDTO payload): void
+        +broadcastAlert(String destination, String message): void
+    }
+
+    class AppConfigInterceptor {
+        <<Configuration>>
+        +kafkaConsumerFactory(): ConsumerFactory
+        +webSocketConfig(): WebSocketConfigurer
+    }
+
+    class SensorDataDTO {
+        +UUID id
+        +UUID deviceId
+        +UUID sensorId
+        +LocalDateTime timestamp
+        +Double value
+    }
+
+    IoTConsumer --> SensorDataDTO: consumes >
+    IoTConsumer --> WebSocketController: dispatches >
+    AppConfigInterceptor --> IoTConsumer: configures >
+    AppConfigInterceptor --> WebSocketController: configures >
+    WebSocketController --> SensorDataDTO: broadcasts >
+    WebSocketController --> SensorDataDTO: receives >

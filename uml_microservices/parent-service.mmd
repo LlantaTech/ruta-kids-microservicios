@@ -1,0 +1,138 @@
+classDiagram
+%% ENTITIES
+    class Parent {
+        <<Entity>>
+        +UUID id
+        +UUID userId
+        +String firstName
+        +String lastName
+        +List<Child> children
+    }
+
+    class Child {
+        <<Entity>>
+        +UUID id
+        +String firstName
+        +String lastName
+        +LocalDate birthDate
+    }
+
+    class User {
+        <<Entity>>
+        +UUID id
+        +String username
+        +String email
+        +String password
+        +List<String> roles
+    }
+
+%% DTOS
+    class ParentDTO {
+        <<DTO>>
+        +UUID id
+        +UUID userId
+        +String firstName
+        +String lastName
+    }
+
+    class ChildDTO {
+        <<DTO>>
+        +UUID id
+        +String firstName
+        +String lastName
+    }
+
+    class UserDTO {
+        <<DTO>>
+        +UUID id
+        +String username
+        +String email
+    }
+
+%% REPOSITORIES
+    class ParentRepository {
+        <<Repository>>
+        +findAll(): List<Parent>
+        +findById(UUID id): Optional<Parent>
+    }
+
+    class ChildRepository {
+        <<Repository>>
+        +findAllByParentId(UUID parentId): List<Child>
+    }
+
+    class UserRepository {
+        <<Repository>>
+        +findByUsername(String username): Optional<User>
+    }
+
+%% SERVICES
+    class ParentService {
+        <<Service>>
+        +findAllParents(): List<ParentDTO>
+        +findParentById(UUID id): ParentDTO
+    }
+
+    class ChildService {
+        <<Service>>
+        +findChildrenByParentId(UUID parentId): List<ChildDTO>
+    }
+
+    class UserService {
+        <<Service>>
+        +findUserByUsername(String username): UserDTO
+    }
+
+%% CONTROLLERS
+    class ParentController {
+        <<Controller>>
+        +getAllParents(): ResponseEntity<List<ParentDTO>>
+        +getParentById(UUID id): ResponseEntity<ParentDTO>
+    }
+
+    class ChildController {
+        <<Controller>>
+        +getChildrenByParent(UUID parentId): ResponseEntity<List<ChildDTO>>
+    }
+
+    class UserController {
+        <<Controller>>
+        +getUserByUsername(String username): ResponseEntity<UserDTO>
+    }
+
+%% KAFKA CONSUMER
+    class ParentKafkaConsumer {
+        <<KafkaListener>>
+        +consumeParentEvent(String message): void
+        +parseParentPayload(String payload): ParentDTO
+    }
+
+%% CONFIGURATION
+    class AppConfigParent {
+        <<Configuration>>
+        +datasourceConfig(): DataSource
+    }
+
+%% RELATIONS
+
+Parent "1" o-- "*" Child : has >
+
+ParentRepository <|.. ParentService : uses >
+ChildRepository <|.. ChildService : uses >
+UserRepository <|.. UserService : uses >
+
+ParentService --> ParentDTO : produces >
+ChildService --> ChildDTO : produces >
+UserService --> UserDTO : produces >
+
+ParentController --> ParentService : uses >
+ChildController --> ChildService : uses >
+UserController --> UserService : uses >
+
+ParentKafkaConsumer --> ParentService : persists >
+ParentKafkaConsumer --> ParentDTO : parses >
+
+AppConfigParent --> ParentRepository : configures >
+AppConfigParent --> ChildRepository : configures >
+AppConfigParent --> UserRepository : configures >
+AppConfigParent --> ParentKafkaConsumer : configures >
