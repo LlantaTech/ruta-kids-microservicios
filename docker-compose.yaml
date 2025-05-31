@@ -82,7 +82,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker
     ports:
-      - "8080:8080"
+      - "7865:8080"
     networks:
       - ruta-kids-network
 
