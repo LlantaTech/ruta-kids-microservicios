@@ -27,7 +27,7 @@ services:
   config-server:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.config-server
       args:
         MODULE_NAME: config-server
     ports:
@@ -68,6 +68,23 @@ services:
     networks:
       - ruta-kids-network
 
+    # API Gateway (gateway service)
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MODULE_NAME: api-gateway
+    container_name: api-gateway
+    depends_on:
+      - config-server
+      - eureka-server
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8080:8080"
+    networks:
+      - ruta-kids-network
 
 networks:
   ruta-kids-network:
