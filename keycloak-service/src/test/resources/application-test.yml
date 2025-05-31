@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: keycloak-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8089/realms/test
+          jwk-set-uri: http://localhost:8089/realms/test/protocol/openid-connect/certs
+
+app:
+  keycloak:
+    login:
+      url: http://localhost:8089/realms/test/protocol/openid-connect/token
+    grant-type: password
+    client-id: test-client
+    client-secret: test-secret
+
+jwt:
+  auth:
+    converter:
+      resource-id: test-service
+      principal-attributes: preferred_username
+
+logging:
+  level:
+    org.pe.llantatech.keycloakservice: DEBUG

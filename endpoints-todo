@@ -1,0 +1,77 @@
+// Eres un ingeniero de software experto en desarrollo de microserviciso con java + springboot con db mongodb
+
+export interface Parent {
+  type: string;
+  dni: string;
+  firstName: string;
+  paternalLastName: string;
+  maternalLastName: string;
+  email: string;
+  phone: string;
+  address: string;
+  district: string;
+}
+
+import {Parent} from "./parent";
+import {Coordinates} from "../../shared/model/coordinates";
+
+export interface Student {
+  id?: string;
+  dni: string;
+  firstName: string;
+  paternalLastName: string;
+  maternalLastName: string;
+  level: string;
+  grade: number;
+  email?: string;
+  phone?: string;
+  address: string;
+  coordinates: Coordinates[];
+  photo?: string;
+  hasMobility: boolean;
+  parents: Parent[];
+}
+
+export interface Coordinates {
+  lat: number;
+  lng: number;
+}
+
+export interface GlobalAlert {
+  id: number;
+  type: 'daxa' | 'success' | 'danger' | 'primary';
+  message: string;
+}
+
+export interface SchoolTransportation {
+  id?: string;
+  dni: string;
+  licenseCode: string;
+  firstName: string;
+  paternalLastName: string;
+  maternalLastName: string;
+  phone: string;
+  email?: string;
+  address: string;
+
+  vehiclePlate: string;
+  vehicleBrand: string;
+  vehicleModel: string;
+  vehicleColor: string;
+
+  driverPhoto?: string;
+  vehiclePhoto?: string;
+}
+
+import {Student} from "../../students/model/student";
+import {SchoolTransportation} from "../../school-transportation/model/school-transportation";
+
+export interface SchoolRoutes {
+  id?: string;
+  routeCode: string;
+  schoolTransportation: SchoolTransportation;
+  students: Student[];
+}
+// Creame el/los microservicios para la aplicacion de movilidad escolar, el microservicio de movilidad escolar es el que se encarga de gestionar las rutas escolares y los estudiantes que van en esas rutas
+// Las alertas es un microservicio que se encarga de gestionar las alertas globales de la aplicación -> envia al front con ws y recibe dede kafka para pordser enviar
+// Lo demas separa en los microserivcio que creas conveniente, ya tengo un iam con keycloack entonces normal eso uwu

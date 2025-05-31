@@ -1,0 +1,13 @@
+package org.pe.llantatech.notifications;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class NotificationsServicesApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(NotificationsServicesApplication.class, args);
+	}
+
+}
