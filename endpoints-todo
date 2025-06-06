@@ -37,12 +37,6 @@ export interface Coordinates {
   lng: number;
 }
 
-export interface GlobalAlert {
-  id: number;
-  type: 'daxa' | 'success' | 'danger' | 'primary';
-  message: string;
-}
-
 export interface SchoolTransportation {
   id?: string;
   dni: string;

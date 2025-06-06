@@ -23,8 +23,7 @@ public class NotificationEventListener {
     private final WebSocketService webSocketService;
 
 
-    @KafkaListener(topics = "notifications", groupId = "${spring.kafka.consumer.group-id}")
-    public void onMessage(KafkaPushNotificationPayload payload) {
+	    public void onMessage(KafkaPushNotificationPayload payload) {
         PushNotification notification = new PushNotification(
                 payload.getTitle(),
                 payload.getMessage(),
