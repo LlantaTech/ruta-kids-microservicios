@@ -1,0 +1,8 @@
+server:
+  port: 0 # random port\
+
+spring:
+  application:
+    name: files-service
+  config:
+    import: optional:configserver:http://localhost:8888
